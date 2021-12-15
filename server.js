@@ -15,22 +15,6 @@ app.use(function (req, res, next) {
       next();
     });
   app.use(bodyParser.json());
-  
-
-
-  //config du firebase
- /* var firebaseConfig = {
-    apiKey: "AIzaSyAaLb6G5nbD2jsVbvqkaPnwWXEVizAF3tE",
-    authDomain: "js-project-b7007.firebaseapp.com",
-    databaseURL: "https://js-project-b7007-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "js-project-b7007",
-    storageBucket: "js-project-b7007.appspot.com",
-    messagingSenderId: "613227691457",
-    appId: "1:613227691457:web:9473ee24d7330dd5700340"
-  };
-  // Initialize Firebase
- firebase.initializeApp(firebaseConfig);
- let database = firebase.database();*/
 
  //connexion avec la base de données
  var db = mysql.createConnection({
@@ -41,17 +25,39 @@ app.use(function (req, res, next) {
 });
 db.connect();
 
-app.get('/hello', (req, res) => {
+app.get('/hello/:id', (req, res) => {
   //res.send('Hello World!')
   db.query("select * from users where firstName=?","nermine", function(err, result) {
     if (err) {
       res.json("erreur");
     } else {
-      
-      res.json(result[0]['firstName']);
+      console.log(req.params.id)
+      res.json(req.params.id);
     }
 });
-  
+  // return "hello"
+});
+
+app.post('/signUp', (req, res) => {
+  $user=req.body;
+  /*$user.firstName="ner";
+  $user.lastName="kh";
+  $user.phone="555";
+  $user.email="vdcv";
+  $user.password="vcv";
+  $user.address="gfd";*/
+  //res.send('Hello World!')
+  var $reqe="insert into users (firstName,lastName,adresse,phone,email,password) values ('"+$user.firstName+"','"+$user.lastName+"','"+$user.address+"','"+$user.phone+"','"+$user.email+"','"+$user.password+"')";
+  db.query($reqe,function(err, result) {
+    if (err) {
+      res.json("erreur");
+      console.log("error")
+    } else {
+      console.log("req.params.id")
+      res.json("done");
+    }
+});
+
  // return "hello"
 });
 
